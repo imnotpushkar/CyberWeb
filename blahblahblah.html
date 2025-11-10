@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Defender's Handbook | Cybersecurity Project</title>
+    
+    <!-- FONT IMPORT: Inter for a clean, modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- INLINE CSS STYLES -->
+    <style>
+        /* --- Global Reset & Variables --- */
+        :root {
+            --primary-color: #007bff; /* Blue for highlights and links */
+            --secondary-color: #28a745; /* Green for success/secure elements */
+            --accent-color: #ffc107; /* Yellow for warnings */
+            --background-dark: #343a40; /* Dark gray for header/footer */
+            --text-dark: #212529; /* Near black for contrast */
+            --text-light: #f8f9fa;
+            --font-heading: 'Inter', sans-serif;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-body);
+            line-height: 1.7;
+            color: var(--text-dark);
+            scroll-padding-top: 5rem; 
+            
+            /* --- Background Image and Filter Setup --- */
+            /* Using a subtle tech/circuit theme image */
+            background-image: url('https://placehold.co/1920x1080/1c1e21/FFFFFF/png?text=DIGITAL+GRID+SECURITY');
+            background-size: cover;
+            background-attachment: fixed; 
+            background-position: center;
+            position: relative; /* Needed for ::before overlay */
+        }
+        
+        /* The "Somewhat Transparent Filter" Overlay (90% opaque white) */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            /* 90% opaque white filter for maximum text readability over the background image */
+            background-color: rgba(255, 255, 255, 0.90); 
+            z-index: -1; 
+        }
+
+        /* --- Header & Navigation --- */
+        header {
+            background-color: rgba(52, 58, 64, 0.95); /* Semi-transparent dark header */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        nav li {
+            flex-grow: 1; 
+            text-align: center;
+        }
+
+        nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            padding: 1rem 0.5rem;
+            display: block;
+            font-weight: 700;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        nav a:hover, nav a.active {
+            background-color: var(--primary-color); 
+            color: var(--text-light);
+            box-shadow: inset 0 -4px 0 var(--accent-color);
+        }
+
+        /* --- Section Layouts --- */
+        section {
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .section-content {
+            max-width: 1100px;
+            margin: 0 auto;
+            text-align: left;
+            background-color: rgba(255, 255, 255, 0.9); /* Slight white box for internal sections */
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-family: var(--font-heading);
+            font-weight: 900;
+            font-size: 3.2rem;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--accent-color);
+            display: inline-block;
+        }
+        
+        h4 {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-top: 20px;
+            margin-bottom: 10px;
+            border-left: 5px solid var(--primary-color);
+            padding-left: 15px;
+        }
+
+        h3 {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-top: 0;
+            font-size: 1.5rem;
+        }
+
+        /* --- Hero Section --- */
+        #home {
+            min-height: 85vh; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        
+        #home .section-content {
+            background: none; /* Hero content is transparent to show filtered background */
+            box-shadow: none;
+            padding: 0;
+        }
+
+        #home h1 {
+            font-size: 4rem;
+            color: var(--primary-color);
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .lead-text {
+            font-size: 1.4rem;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 700;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+        }
+
+        .cta-button:hover {
+            background-color: #1e7e34; 
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(40, 167, 69, 0.6);
+        }
+
+        /* --- Card & Grid Layouts --- */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+
+        .card {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-top: 4px solid var(--primary-color);
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card.secure-card {
+             border-top-color: var(--secondary-color);
+        }
+
+        /* --- Methodology Block Style --- */
+        .methodology-step {
+            display: flex;
+            align-items: flex-start;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            background-color: #f7f9fc;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .step-number {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--text-light);
+            background-color: var(--primary-color);
+            margin-right: 20px;
+            padding: 10px 15px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+        }
+        
+        .step-content h3 {
+            margin-bottom: 5px;
+            color: var(--text-dark);
+            border-bottom: 2px dotted var(--secondary-color);
+            display: inline-block;
+            font-size: 1.2rem;
+        }
+        
+        /* --- Process Flow Style (DNS) --- */
+        .dns-process-container {
+            margin-top: 30px;
+            padding: 20px;
+            border: 1px dashed #ced4da;
+            border-radius: 10px;
+            background-color: #e9ecef;
+            text-align: center;
+        }
+        .process-flow {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .process-node {
+            flex-basis: 18%;
+            padding: 15px 10px;
+            margin: 10px 5px;
+            background-color: white;
+            border-radius: 6px;
+            position: relative;
+            font-size: 0.85rem;
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .process-node strong {
+            display: block;
+            font-size: 1rem;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+        .process-node::after {
+            content: '→';
+            position: absolute;
+            right: -25px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary-color);
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        .process-node:last-child::after {
+            content: '';
+        }
+
+        /* --- Cryptography Table Styling --- */
+        .crypto-table-container {
+            margin: 20px 0 40px;
+            overflow-x: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+        .crypto-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        .crypto-table th, .crypto-table td {
+            padding: 12px 15px;
+            border: 1px solid #dee2e6;
+            text-align: left;
+        }
+        .crypto-table th {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            font-weight: 600;
+        }
+        .crypto-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        /* --- Code Blocks & Lists --- */
+        .code-block {
+            background-color: #e9ecef;
+            border-left: 5px solid var(--accent-color);
+            padding: 15px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            font-size: 0.9em;
+            border-radius: 4px;
+        }
+
+        .code-block.secure {
+            border-left-color: var(--secondary-color); 
+        }
+
+        ul {
+            list-style-type: '➡️ '; 
+            padding-left: 20px;
+            margin-top: 10px;
+        }
+
+        ul li {
+            margin-bottom: 8px;
+        }
+        
+        ul.simple-list {
+            list-style-type: disc;
+            padding-left: 40px;
+        }
+
+        /* Blockquote for callouts */
+        blockquote {
+            margin: 20px 0;
+            padding: 15px 20px;
+            border-left: 5px solid var(--accent-color);
+            background-color: #fffbe6;
+            color: var(--text-dark);
+            font-style: italic;
+            border-radius: 4px;
+        }
+        
+
+        /* --- Footer --- */
+        footer {
+            background-color: var(--background-dark);
+            color: var(--text-light);
+            padding: 30px 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .social-links {
+            margin-top: 15px;
+        }
+
+        .footer-link {
+            color: var(--accent-color);
+            text-decoration: none;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: var(--primary-color);
+        }
+
+        /* --- Media Queries for Responsiveness (Mobile First) --- */
+        @media (max-width: 900px) {
+            .process-flow {
+                justify-content: center;
+            }
+            .process-node {
+                flex-basis: 45%; 
+            }
+            .process-node::after {
+                right: 50%;
+                top: 100%;
+                transform: translate(50%, 0) rotate(90deg); /* Rotate arrow down */
+                content: '↓';
+            }
+            .process-node:last-child::after {
+                content: '';
+            }
+            
+            nav ul {
+                flex-direction: column; 
+                padding: 10px 0;
+            }
+
+            #home h1 {
+                font-size: 3rem;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            h2 {
+                font-size: 1.8rem;
+            }
+            .methodology-step {
+                flex-direction: column;
+                text-align: center;
+            }
+            .step-number {
+                margin: 0 auto 10px;
+            }
+            .step-content {
+                text-align: left;
+            }
+            .process-node {
+                flex-basis: 90%;
+            }
+            .process-node::after {
+                transform: translate(50%, 0) rotate(90deg);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION BAR -->
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#home">HOME</a></li>
+                <li><a href="#web-attacks">WEB ATTACKS</a></li>
+                <li><a href="#network-security">NETWORK & PROTOCOLS</a></li>
+                <li><a href="#cryptography">CRYPTOGRAPHY</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- 1. HOME/HERO SECTION -->
+    <section id="home" class="hero-section">
+        <div class="section-content">
+            <h1>🛡️ THE DEFENDER'S HANDBOOK</h1>
+            <p class="lead-text">A Student Guide to Cyber Threats & Defensive Coding Practices. Education is the first line of defense.</p>
+            <a href="#web-attacks" class="cta-button">EXPLORE DEFENSIVE STRATEGIES</a>
+            <p style="margin-top: 15px; font-size: 0.9rem;">
+                
+            </p>
+        </div>
+    </section>
+
+    <!-- 2. WEB ATTACKS SECTION (SQLi, XSS, Tools) -->
+    <section id="web-attacks" class="topic-section">
+        <div class="section-content">
+            <h2>DECODING WEB ATTACKS: VULNERABILITY VS. MITIGATION</h2>
+            
+            <div class="grid-container">
+                <!-- SQL INJECTION CARD -->
+                <div class="card sql-injection">
+                    <h3>SQL Injection (SQLi)</h3>
+                    <p>A vulnerability allowing attackers to interfere with database queries, often leading to data theft or authentication bypass. Defense relies on **Parameterized Queries**.</p>
+                    
+                    <h4>Vulnerable Example (PHP Pseudo-Code)</h4>
+                    <pre class="code-block">
+$query = "SELECT * FROM users WHERE user = '" . $input . "';"
+                    </pre>
+                    
+                    <h4>Secure Example (PHP PDO Pseudo-Code)</h4>
+                    <pre class="code-block secure">
+$stmt = $pdo->prepare('SELECT * FROM users WHERE user = ?');
+$stmt->execute([$input]);
+                    </pre>
+                </div>
+
+                <!-- BLIND SQL INJECTION & BYPASS -->
+                <div class="card sql-injection secure-card">
+                    <h3>Blind SQL Injection & Bypass</h3>
+                    <p>This attack occurs when the server suppresses detailed error messages. Attackers use a universal truth (e.g., **'1'='1'**) combined with the **SQL comment** (`--`) to skip the rest of the query, bypassing the password check.</p>
+                    
+                    <h4>Authentication Bypass Input Example</h4>
+                    <p>The input closes the quote, injects a universal truth, and comments out the rest of the original query.</p>
+                    
+                    <pre class="code-block">
+Username: admin' OR '1'='1' -- 
+Password: (any value is ignored)
+                    </pre>
+                </div>
+
+                <!-- XSS CARD -->
+                <div class="card xss-attack">
+                    <h3>Cross-Site Scripting (XSS)</h3>
+                    <p>Injecting malicious client-side scripts (JavaScript) into a website. Defense is **Output Encoding** and a robust **Content Security Policy (CSP)**.</p>
+                    
+                    <h4>Vulnerable Input</h4>
+                    <pre class="code-block">
+&lt;script&gt;alert('XSS Attack')&lt;/script&gt;
+                    </pre>
+
+                    <h4>Secure Output (Encoded)</h4>
+                    <p>Characters like < and > are converted to their HTML entity equivalent, rendering the script harmless.</p>
+                    <pre class="code-block secure">
+&amp;lt;script&amp;gt;alert('XSS Attack')&amp;lt;/script&amp;gt;
+                    </pre>
+                </div>
+                
+                <!-- WEB ATTACK TOOLS & RECON -->
+                <div class="card secure-card">
+                    <h3>Ethical Hacking Tools & Reconnaissance</h3>
+                    <p>Effective defense requires understanding the attacker's methods. Reconnaissance is the first step, gathering information to identify vulnerabilities.</p>
+                    
+                    <ul class="simple-list">
+                        <li>**OWASP Top 10:** The global standard list of the most critical web application security risks.</li>
+                        <li>**BURP Suite:** Works as an **interceptor** to capture and modify HTTP requests/responses. Crucial for finding **Logic Flaws**.</li>
+                        <li>**Nmap:** A powerful network scanner used to discover live hosts and identify **open ports** and the **service versions** running on a target IP.</li>
+                        <li>**Wappalyzer/whatweb:** Tools used in recon to identify the website's **technology stack** (e.g., WordPress, NGINX version).</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ATTACK METHODOLOGY SECTION -->
+    <section id="methodology" class="topic-section">
+        <div class="section-content">
+            <h2>NETWORK PENETRATION TESTING METHODOLOGY</h2>
+            <p>A structured approach to vulnerability assessment, ensuring all vectors are considered and security controls are validated.</p>
+            
+            <div class="methodology-steps-container">
+                
+                <div class="methodology-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Reconnaissance (Information Gathering)</h3>
+                        <p>Scanning the local network (e.g., using <code>arp-scan -l</code>) to get the target's IP, or using tools like **Wappalyzer** to identify the website's technology stack. This step gathers initial data for the attack.</p>
+                        <p><strong>Defense:</strong> Minimize public-facing information about your infrastructure. Keep services patched to mask version details.</p>
+                    </div>
+                </div>
+
+                <div class="methodology-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Scanning & Enumeration</h3>
+                        <p>Using **Nmap** to scan the target IP for services, identifying **open ports**, and detailing the software versions (e.g., <code>nmap &lt;target_ip&gt; -p__,___ -sV</code>). The real vulnerability often lies in an **outdated service version**.</p>
+                        <p><strong>Defense:</strong> Maintain rigorous patch management. Close all unnecessary ports (default ports like **RDP/3389** are common targets).</p>
+                    </div>
+                </div>
+
+                <div class="methodology-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Exploitation (Initial Breach)</h3>
+                        <p>Attempting to breach the system using identified vulnerabilities, often using exploit frameworks like **Metasploit** (e.g., <code>exploit/windows/smb/ms17_010_eternalblue</code>) to deliver a payload (like a reverse shell).</p>
+                        <p><strong>Defense:</strong> Implement **Web Application Firewalls (WAFs)** and **Intrusion Detection Systems (IDS)** to block known exploit patterns.</p>
+                    </div>
+                </div>
+                
+                <div class="methodology-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Post-Exploitation & Reporting</h3>
+                        <p>Assessing the impact, maintaining access (persistence), and pivoting to other systems within the network. Finally, documenting all findings and remediation steps in a formal report.</p>
+                        <p><strong>Defense:</strong> Implement strict **Principle of Least Privilege (PoLP)** and network segmentation to limit horizontal movement after a breach.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. NETWORK SECURITY & PROTOCOLS SECTION -->
+    <section id="network-security" class="topic-section">
+        <div class="section-content">
+            <h2>NETWORK DEFENSE, PROTOCOLS & SECURE ACCESS</h2>
+            
+            <div class="grid-container">
+                <!-- TRANSPORT PROTOCOLS (Expanded Content) -->
+                <div class="card network-card">
+                    <h3>Transport & Access Protocols</h3>
+                    <p>Protocols define the rules of communication. Every protocol goes through a specific port.</p>
+                    
+                    <ul class="simple-list">
+                        <li>**TCP (Transfer Control Protocol):** Focuses on **reliability** and **error control**. Stops transmission to retrieve lost packets.</li>
+                        <li>**UDP (User Datagram Protocol):** Focuses on **speed** and **lightweight** communication. Continues transmission even if packets are lost (used for video streaming, DNS).</li>
+                        <li>**QUIC:** Used in HTTP/3, it combines the speed of UDP with TCP's reliability features, reducing latency.</li>
+                        <li>**RDP (Remote Desktop Protocol):** Allows remote access to Windows desktop. Port **3389**. Often targeted by attackers for brute-force/ransomware campaigns.</li>
+                        <li>**Total Ports:** There are effectively **131,070** total ports (65535 * 2) because every port can use either TCP or UDP.</li>
+                    </ul>
+                </div>
+
+                <!-- SECURE COMMUNICATION (New Card) -->
+                <div class="card secure-card">
+                    <h3>Secure Communication: TLS & HSTS</h3>
+                    <p>Secure protocols provide **encryption**, **authentication**, and **data integrity**.</p>
+                    
+                    <ul class="simple-list">
+                        <li>**TLS (Transport Layer Security):** The modern successor to SSL, offering superior encryption (TLS 1.3 is the latest).</li>
+                        <li>**HSTS (HTTP Strict Transport Security):** A policy that forces the browser to **only** connect via **HTTPS**, preventing clients from accidentally using insecure HTTP pages on a site.</li>
+                    </ul>
+                    
+                    <h4>TLS Handshake Overview</h4>
+                    <p>The initial process to establish a secure, encrypted connection:</p>
+                    <ol style="padding-left: 20px; list-style-type: decimal;">
+                        <li>Client Hello (versions, cipher suites, random number).</li>
+                        <li>Server Hello (server picks options, sends **Digital Certificate**).</li>
+                        <li>Key Exchange & Verification (Client verifies the server's certificate).</li>
+                        <li>Session Key Generation (using a fast **Symmetric Key**).</li>
+                        <li>Finished Messages (secure communication is established).</li>
+                    </ol>
+                </div>
+
+                <!-- VPN & WIRELESS SECURITY (Expanded Content) -->
+                <div class="card network-card">
+                    <h3>VPN & Wireless Defense</h3>
+                    <p>Creating tunnels and boundaries for secure access.</p>
+                    
+                    <ul class="simple-list">
+                        <li>**VPN (Virtual Private Network):** Creates a secure, **encrypted tunnel** between your device and a remote server, allowing secure remote access to a private network (e.g., using an **.ovpn client file**).</li>
+                        <li>**WPA3 (Wi-Fi Protected Access 3):** The current mandatory Wi-Fi standard. Offers stronger encryption and **forward secrecy** (compromising one session key doesn't decrypt past data).</li>
+                        <li>**WPA2 Vulnerability:** WPA2 is vulnerable to **KRACK attacks** and lacks protection against brute-force attacks on weak passwords.</li>
+                        <li>**Traffic Interception:** Tools like **Wireshark** can analyze unencrypted wireless traffic, making strong encryption paramount.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div style="margin-top: 40px;">
+                <h2>THE DOMAIN NAME SYSTEM (DNS) RESOLUTION PROCESS</h2>
+                <p>DNS converts a human-readable domain name (e.g., <code>example.com</code>) into a machine-readable IP address. This complex process involves four different servers.</p>
+                
+                <div class="dns-process-container">
+                    <p><strong>Query:</strong> Client needs to resolve <code>www.example.com</code>.</p>
+                    <div class="process-flow">
+                        
+                        <div class="process-node">
+                            <strong>1. Client/Local Cache</strong>
+                            <p>Initiates DNS query. Checks local **Cache** first for existing IP.</p>
+                        </div>
+                        
+                        <div class="process-node">
+                            <strong>2. Recursive Resolver (ISP)</strong>
+                            <p>Acts as an intermediary. Forwards the request to the Root Nameserver if not found in cache.</p>
+                        </div>
+                        
+                        <div class="process-node">
+                            <strong>3. Root Nameserver (.)</strong>
+                            <p>Reads the TLD (e.g., <code>.com</code>) and directs the query to the appropriate TLD Nameserver.</p>
+                        </div>
+                        
+                        <div class="process-node">
+                            <strong>4. TLD Nameserver (.com)</strong>
+                            <p>Responds with the location (IP) of the domain's Authoritative Nameserver.</p>
+                        </div>
+                        
+                        <div class="process-node">
+                            <strong>5. Authoritative Nameserver</strong>
+                            <p>The final server. Holds the actual IP address for the requested domain and sends it back to the Resolver.</p>
+                        </div>
+                        
+                    </div>
+                     <p style="margin-top: 20px;"><strong>Result:</strong> IP is cached locally, which is why websites load instantly on subsequent visits.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 4. CRYPTOGRAPHY SECTION (Detailed Content Integration) -->
+    <section id="cryptography" class="topic-section">
+        <div class="section-content">
+            <h2>FOUNDATIONAL SECURITY: CRYPTOGRAPHY & KEY MANAGEMENT</h2>
+            
+            <p style="margin-bottom: 25px;">**Cryptography** is the conversion of **plaintext** (readable) into **ciphertext** (unreadable) using an **encryption algorithm** and a **key** to ensure confidentiality, integrity, and non-repudiation.</p>
+
+            <!-- CORE COMMUNICATION FLOW -->
+            <div style="border: 2px solid #ddd; padding: 20px; border-radius: 8px; background-color: #f7f7f7;">
+                <h4>I. Core Secure Communication Flow</h4>
+                <ol style="list-style-type: decimal; padding-left: 40px;">
+                    <li>**Sender** prepares the Plaintext message.</li>
+                    <li>**Key Exchange** to agree on a secret key (either symmetric or asymmetric).</li>
+                    <li>**Authentication** (verify sender).</li>
+                    <li>**Encryption** of the plaintext into ciphertext.</li>
+                    <li>**Ciphertext Transmission**.</li>
+                    <li>**Authentication** (receiver verifies sender).</li>
+                    <li>**Tamper Check** (Integrity) using hashing.</li>
+                    <li>**Decryption** back into plaintext.</li>
+                    <li>**Receiver** reads the original message.</li>
+                </ol>
+                <blockquote>
+                    <p>A **hybrid approach** is often used: a fast **symmetric key** (like AES) is used for bulk data, and that key is then securely exchanged using **asymmetric encryption** (like RSA).</p>
+                </blockquote>
+            </div>
+            
+            <!-- KEY TYPES AND ALGORITHMS -->
+            <div style="margin-top: 30px;">
+                <h4>II. Symmetric Key Encryption (Speed and Bulk Data)</h4>
+                <p>Uses the **same secret key** for both encryption and decryption. This method is exceptionally fast and efficient for bulk data transfer.</p>
+                
+                <div class="crypto-table-container">
+                    <table class="crypto-table">
+                        <thead>
+                            <tr>
+                                <th>Algorithm</th>
+                                <th>Key Length</th>
+                                <th>Block Size</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>**DES** (Data Encryption Standard)</td>
+                                <td>56 bits</td>
+                                <td>64 bits</td>
+                                <td>Older standard, vulnerable to **brute-force attacks** due to short key length. Uses Feistel structure.</td>
+                            </tr>
+                            <tr>
+                                <td>**AES** (Advanced Encryption Standard)</td>
+                                <td>128, 192, or 256 bits</td>
+                                <td>128 bits</td>
+                                <td>Modern standard developed to replace DES. Uses Substitution-Permutation Network. Very fast, highly secure, and used widely (WPA2/3, VPNs).</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <h4>III. Asymmetric Key Encryption (Public-Key for Exchange)</h4>
+                <p>Uses a mathematically linked **Public Key** (for encryption/verification) and **Private Key** (for decryption/signing). This is slower than symmetric encryption.</p>
+                <ul class="simple-list">
+                    <li>**Public Key:** Freely distributed, used to encrypt data.</li>
+                    <li>**Private Key:** Kept secret, used only by the owner to decrypt data.</li>
+                    <li>**Key Pairing:** Only the **Public Key** can encrypt, and only the corresponding **Private Key** can decrypt.</li>
+                </ul>
+            </div>
+            
+            <!-- CERTIFICATE AUTHORITIES -->
+            <div style="margin-top: 30px;">
+                <h4>IV. Certificate Authorities (CAs) and Trust</h4>
+                <p>CAs issue **Digital Certificates** to verify the identity of a server, binding its identity to its public key, which establishes trust in the asymmetric exchange process (like the TLS handshake).</p>
+                <ul class="simple-list">
+                    <li>**CA Role:** Verify the server's identity, sign the certificate using the CA's trusted private key, and issue the certificate.</li>
+                    <li>**Browser Check:** The browser verifies the CA's signature using the CA's public key (already trusted by the browser). If valid, the server's public key is trusted.</li>
+                    <li>**Well-known CAs:** DigiCert, Let's Encrypt, GlobalSign.</li>
+                </ul>
+            </div>
+            
+            <!-- HASHING AND DIGITAL SIGNATURES -->
+            <div style="margin-top: 30px;">
+                <h4>V. Hashing and Digital Signatures (Integrity & Non-Repudiation)</h4>
+                
+                <div class="grid-container" style="gap: 15px;">
+                    <div class="card" style="border-top-color: var(--accent-color);">
+                        <h3>Hashing (Integrity)</h3>
+                        <p>A **one-way function** that produces a fixed-size **hash digest** from any input data. It ensures data **integrity** because a tiny change in the data results in a massive change in the hash, signaling tampering.</p>
+                        <ul class="simple-list">
+                            <li>**Examples:** SHA-256 (for integrity), bcrypt/Argon2 (for secure password storage).</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card secure-card">
+                        <h3>Digital Signatures</h3>
+                        <p>Provides **authentication** (sender verification) and **non-repudiation** (sender cannot deny sending the message).</p>
+                        <ol style="list-style-type: decimal; padding-left: 20px;">
+                            <li>Sender calculates a **hash** of the message.</li>
+                            <li>Sender **encrypts** the hash using their **Private Key** (this forms the signature).</li>
+                            <li>Receiver calculates the hash of the received message.</li>
+                            <li>Receiver uses Sender's **Public Key** to **decrypt** the signature.</li>
+                            <li>If the two hashes match, the signature is valid.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER/PROJECT SUMMARY -->
+    <footer>
+        <div class="section-content" style="background: none; box-shadow: none;">
+            <p>&copy; 2025 Student Cybersecurity Project | All rights reserved.</p>
+            <p><strong>Project Note:</strong> All examples are strictly for educational and defensive purposes.</p>
+            <!-- Placeholder for external links (GitHub, LinkedIn) -->
+            <div class="social-links">
+                <a href="#" class="footer-link">View Repository (GitHub)</a> | 
+                <a href="#" class="footer-link">Connect (LinkedIn)</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- INLINE JAVASCRIPT -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('nav a');
+            const sections = document.querySelectorAll('section');
+            const header = document.querySelector('header');
+            
+            let headerHeight = 0;
+            
+            function updateHeaderHeight() {
+                // Ensure header height is calculated correctly for sticky nav offset
+                headerHeight = header.offsetHeight;
+                document.body.style.scrollPaddingTop = headerHeight + 'px';
+            }
+            
+            updateHeaderHeight();
+            window.addEventListener('resize', updateHeaderHeight);
+
+
+            // --- 1. Smooth Scrolling Functionality ---
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault(); 
+                    
+                    const targetId = this.getAttribute('href'); 
+                    const targetSection = document.querySelector(targetId);
+
+                    if (targetSection) {
+                        // Calculate scroll position, subtracting the sticky header height
+                        const scrollPosition = targetSection.offsetTop - headerHeight; 
+
+                        window.scrollTo({
+                            top: scrollPosition, 
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // --- 2. Active Link Indicator Functionality ---
+            
+            function setActiveLink() {
+                let current = '';
+
+                sections.forEach(section => {
+                    // Check if the current scroll position is past the top of the section
+                    // Use a 50px offset for smoother transition
+                    const sectionTop = section.offsetTop - headerHeight;
+                    if (window.scrollY >= sectionTop - 50) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    // Check if the link's href contains the current section ID
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+
+            window.addEventListener('scroll', setActiveLink);
+            setActiveLink(); // Initial call
+        });
+    </script> 
+</body>
+</html>
